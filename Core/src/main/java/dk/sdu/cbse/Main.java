@@ -12,5 +12,6 @@ public class Main extends Application{
     public void start(Stage window) throws Exception {
         Game game = new Game();
         game.start(window);
+        game.render();
     }
 }

@@ -9,7 +9,13 @@
         <groupId>dk.sdu.cbse</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>21.0.2</version>
+        </dependency>
+    </dependencies>
     <groupId>dk.sdu.cbse</groupId>
     <artifactId>Common</artifactId>
     <version>1.0-SNAPSHOT</version>

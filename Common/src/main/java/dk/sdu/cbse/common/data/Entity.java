@@ -1,5 +1,7 @@
 package dk.sdu.cbse.common.data;
 
+import javafx.scene.shape.Polygon;
+
 import java.util.UUID;
 
 public class Entity {
@@ -9,7 +11,7 @@ public class Entity {
     private double y;
     private double angle;
     private Vector velocity;
-    private double[][] boundingBox;
+    private Polygon boundingBox;
 
     public String getID() {
         return ID.toString();
@@ -47,11 +49,11 @@ public class Entity {
         this.velocity = velocity;
     }
 
-    public double[][] getBoundingBox() {
+    public Polygon getBoundingBox() {
         return boundingBox;
     }
 
-    public void setBoundingBox(double[][] boundingBox) {
+    public void setBoundingBox(Polygon boundingBox) {
         this.boundingBox = boundingBox;
     }
 }
