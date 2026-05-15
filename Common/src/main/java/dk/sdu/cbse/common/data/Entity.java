@@ -11,8 +11,8 @@ public class Entity {
     private Vector velocity;
     private double[][] boundingBox;
 
-    public UUID getID() {
-        return ID;
+    public String getID() {
+        return ID.toString();
     }
 
     public double getX() {

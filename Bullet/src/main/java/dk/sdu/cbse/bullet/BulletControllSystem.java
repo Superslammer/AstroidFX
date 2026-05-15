@@ -31,6 +31,11 @@ public class BulletControllSystem implements IEntityProccessingService, IBulletS
     @Override
     public void proccess(GameData gameData, World world) {
         // Get bullet entities
-        // Move them according to angle and velocity
+        for (Entity bullet : world.getEntities(Bullet.class)){
+            // Move them according to velocity
+            Vector vel = bullet.getVelocity();
+            bullet.setX(bullet.getX() + vel.getX());
+            bullet.setY(bullet.getY() + vel.getY());
+        }
     }
 }
