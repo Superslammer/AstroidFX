@@ -27,8 +27,16 @@ public class Vector {
         this.y = y;
     }
 
-    public void add(Vector other){
+    public Vector add(Vector other){
         x = x + other.x;
         y = y + other.y;
+        return this;
+    }
+
+    public Vector sub(Vector other){
+        other.setX(-other.getX());
+        other.setY(-other.getY());
+
+        return this.add(other);
     }
 }

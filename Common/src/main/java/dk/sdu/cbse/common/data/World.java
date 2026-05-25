@@ -30,4 +30,8 @@ public class World {
 
         return toReturn;
     }
+
+    public void removeEntity(Entity entity) {
+        entities.remove(entity.getID());
+    }
 }

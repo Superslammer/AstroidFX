@@ -1,13 +1,16 @@
 package dk.sdu.cbse.player;
 
 import dk.sdu.cbse.common.data.Entity;
-import dk.sdu.cbse.common.data.GameData;
-import dk.sdu.cbse.common.data.World;
-import dk.sdu.cbse.common.services.IEntityProccessingService;
 
-public class Player extends Entity implements IEntityProccessingService {
-    @Override
-    public void proccess(GameData gameData, World world) {
+public class Player extends Entity {
+    private static final double ROTATION_ANGLE = 12d;
+    private static final double MOVEMENT_SPEED = 2d;
 
+    public double getRotationAngle() {
+        return ROTATION_ANGLE;
+    }
+
+    public double getMovementSpeed() {
+        return MOVEMENT_SPEED;
     }
 }
