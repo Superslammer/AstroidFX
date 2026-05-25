@@ -9,7 +9,7 @@ import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.bullet.IBulletSPI;
 import javafx.scene.shape.Polygon;
 
-public class BulletControllSystem implements IEntityProccessingService, IBulletSPI {
+public class BulletHandelingSystem implements IEntityProccessingService, IBulletSPI {
 
     @Override
     public Bullet createBullet(Entity shooter, GameData gameData) {
