@@ -11,8 +11,8 @@ import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
 public class PlayerHandelingSystem implements IEntityProccessingService {
-    private static final double BULLET_COOLDOWN_SECONDS = 2d;
-    private static final double PLAYER_DRAG = 2d;
+    private static final double BULLET_COOLDOWN_SECONDS = 0.5d;
+    private static final double PLAYER_DRAG = 0.001d;
     private double currentBulletCooldown = 0;
 
     @Override
@@ -49,7 +49,6 @@ public class PlayerHandelingSystem implements IEntityProccessingService {
                 player.setVelocity(vel.add(player.getVelocity()));
             }
             if(gameData.isShoot() && currentBulletCooldown <= 0){
-                System.out.println("Shoot!");
                 getBulletSPIs().findFirst().ifPresent(
                         spi -> world.addEntity(spi.createBullet(player, gameData))
                 );
@@ -60,7 +59,14 @@ public class PlayerHandelingSystem implements IEntityProccessingService {
             Vector vel = player.getVelocity();
             player.setX(player.getX() + vel.getX() * deltaT);
             player.setY(player.getY() + vel.getY() * deltaT);
-            System.out.println("PX: " + player.getX() + ", PY: " + player.getY() + ", PA: " + player.getAngle() + ", PV: " + player.getVelocity());
+            //System.out.println("PX: " + player.getX() + ", PY: " + player.getY() + ", PA: " + player.getAngle() + ", PV: " + player.getVelocity());
+
+            // Apply drag
+            double curMag = vel.magnitude();
+            if (curMag != 0) {
+                vel.scale(1-PLAYER_DRAG);
+                player.setVelocity(vel);
+            }
         }
 
         // Decrease cooldowns

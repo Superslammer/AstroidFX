@@ -43,6 +43,13 @@ public class BulletHandelingSystem implements IEntityProccessingService, IBullet
             Vector vel = bullet.getVelocity();
             bullet.setX(bullet.getX() + vel.getX());
             bullet.setY(bullet.getY() + vel.getY());
+
+            if (bullet.getX() > gameData.getWidth() || bullet.getX() < 0){
+                world.removeEntity(bullet);
+            }
+            if (bullet.getY() > gameData.getHeight() || bullet.getY() < 0){
+                world.removeEntity(bullet);
+            }
         }
     }
 }
