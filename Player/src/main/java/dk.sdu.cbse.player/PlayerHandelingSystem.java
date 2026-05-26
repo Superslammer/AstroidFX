@@ -11,6 +11,10 @@ import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
 public class PlayerHandelingSystem implements IEntityProccessingService {
+    private static final double BULLET_COOLDOWN_SECONDS = 2d;
+    private static final double PLAYER_DRAG = 2d;
+    private double currentBulletCooldown = 0;
+
     @Override
     public void proccess(GameData gameData, World world) {
         for (Entity entity : world.getEntities(Player.class)){
@@ -42,11 +46,12 @@ public class PlayerHandelingSystem implements IEntityProccessingService {
 
                 player.setVelocity(vel.add(player.getVelocity()));
             }
-            if(gameData.isShoot()){
+            if(gameData.isShoot() && currentBulletCooldown <= 0){
                 System.out.println("Shoot!");
                 getBulletSPIs().findFirst().ifPresent(
                         spi -> world.addEntity(spi.createBullet(player, gameData))
                 );
+                currentBulletCooldown = BULLET_COOLDOWN_SECONDS;
             }
 
             // Move the player
@@ -54,6 +59,9 @@ public class PlayerHandelingSystem implements IEntityProccessingService {
             player.setX(player.getX() + vel.getX());
             player.setY(player.getY() + vel.getY());
         }
+
+        // Decrease cooldowns
+        currentBulletCooldown -= deltaT;
     }
 
     private Stream<IBulletSPI> getBulletSPIs(){

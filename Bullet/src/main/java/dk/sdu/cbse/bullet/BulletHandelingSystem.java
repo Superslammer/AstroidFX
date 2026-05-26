@@ -10,6 +10,7 @@ import dk.sdu.cbse.common.bullet.IBulletSPI;
 import javafx.scene.shape.Polygon;
 
 public class BulletHandelingSystem implements IEntityProccessingService, IBulletSPI {
+    private static final double BULLET_SPEED = 2d;
 
     @Override
     public Bullet createBullet(Entity shooter, GameData gameData) {
@@ -20,9 +21,9 @@ public class BulletHandelingSystem implements IEntityProccessingService, IBullet
 
         // Create the initial velocity vector
         Vector vel = new Vector();
-        double magnitude = 1d;
-        vel.setX(magnitude * Math.cos(Math.toRadians(newBullet.getAngle())));
-        vel.setY(magnitude * Math.sin(Math.toRadians(newBullet.getAngle())));
+        double magnitude = BULLET_SPEED;
+        vel.setX(magnitude * Math.sin(Math.toRadians(newBullet.getAngle())));
+        vel.setY(magnitude * -Math.cos(Math.toRadians(newBullet.getAngle())));
 
         newBullet.setVelocity(vel);
         newBullet.setBoundingBox(new Polygon(
