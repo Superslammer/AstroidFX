@@ -7,11 +7,11 @@ import java.util.UUID;
 public class Entity {
     private final UUID ID = UUID.randomUUID();
 
-    private double x;
-    private double y;
-    private double angle;
-    private Vector velocity;
-    private Polygon boundingBox;
+    private double x = 0;
+    private double y = 0;
+    private double angle = 0;
+    private Vector velocity = new Vector();
+    private Polygon boundingBox = new Polygon();
 
     public String getID() {
         return ID.toString();

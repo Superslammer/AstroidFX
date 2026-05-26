@@ -6,6 +6,8 @@ public class GameData {
     private static final double WIDTH = 800;
     private static final double HEIGHT = 800;
 
+    private double deltaT = 0;
+
     private boolean left = false;
     private boolean right = false;
     private boolean forwards = false;
@@ -74,5 +76,13 @@ public class GameData {
 
     public boolean isShoot() {
         return shoot;
+    }
+
+    public void setDeltaT(double dt){
+        deltaT = dt;
+    }
+
+    public double getDeltaT(){
+        return deltaT;
     }
 }

@@ -1,24 +1,38 @@
 package dk.sdu.cbse;
 
+import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
+import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
     private final World world = new World();
     private final Pane worldWindow = new Pane();
     private final GameData gameData = new GameData();
-    private final List<IGamePluginService> gamePluginServices;
+    private final Map<Entity, Polygon> polygons = new ConcurrentHashMap<>();
 
-    Game(List<IGamePluginService> gamePluginServices){
+    private final List<IGamePluginService> gamePluginServices;
+    private final List<IEntityProccessingService> entityProccessingServices;
+
+    private long lastFrameTime = -1;
+
+    Game(List<IGamePluginService> gamePluginServices, List<IEntityProccessingService> entityProccessingServices){
         this.gamePluginServices = gamePluginServices;
+        this.entityProccessingServices = entityProccessingServices;
     }
 
     public void start(Stage window) {
@@ -27,13 +41,14 @@ public class Game {
         worldWindow.getChildren().add(text);
 
         Scene gameScene = new Scene(worldWindow);
+
         // Handle key presses
         gameScene.setOnKeyPressed(keyEvent -> gameData.pressKey(keyEvent.getCode()));
         gameScene.setOnKeyReleased(keyEvent -> gameData.releaseKey(keyEvent.getCode()));
 
         // Run init functions
-        for(IGamePluginService gService : gamePluginServices){
-            gService.init(gameData, world);
+        for(IGamePluginService pluginService : gamePluginServices){
+            pluginService.init(gameData, world);
         }
 
         // Render initial polygons
@@ -48,6 +63,12 @@ public class Game {
         new AnimationTimer() {
             @Override
             public void handle (long now){
+                if (lastFrameTime == -1){
+                    lastFrameTime = now;
+                }
+                gameData.setDeltaT((now - lastFrameTime)/1.0E9);
+                lastFrameTime = now;
+
                 update();
                 draw();
             }
@@ -55,10 +76,40 @@ public class Game {
     }
 
     private void update(){
-
+        for(IEntityProccessingService service : entityProccessingServices){
+            service.proccess(gameData, world);
+        }
     }
 
     private void draw(){
+        // Remove polygons of non-existant entities
+        Set<Entity> drawnEntities = new HashSet<>(polygons.keySet());
+        Set<Entity> worldEntities = new HashSet<>(world.getEntities());
+        drawnEntities.removeAll(worldEntities);
+
+        for (Entity entityToRemove : drawnEntities){
+            Polygon polygonToRemove = polygons.remove(entityToRemove);
+            worldWindow.getChildren().remove(polygonToRemove);
+        }
+
+        for (Entity entityToAdd : worldEntities){
+            // Add new polygons
+            Polygon polygon = polygons.get(entityToAdd);
+            if (polygon == null) {
+                polygon = entityToAdd.getBoundingBox();
+                polygons.put(entityToAdd, polygon);
+                worldWindow.getChildren().add(polygon);
+                // Color the polygons
+                polygon.setFill(Color.TRANSPARENT);
+                polygon.setStroke(Color.BLACK);
+                polygon.setStrokeWidth(2d);
+            }
+
+            // Move all polygons to entity pos
+            polygon.setTranslateX(entityToAdd.getX());
+            polygon.setTranslateY(entityToAdd.getY());
+            polygon.setRotate(entityToAdd.getAngle());
+        }
 
     }
 

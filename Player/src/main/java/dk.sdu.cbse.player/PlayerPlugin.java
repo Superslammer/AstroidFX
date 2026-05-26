@@ -12,10 +12,10 @@ public class PlayerPlugin implements IGamePluginService {
     public void init(GameData gameData, World world) {
         player = new Player();
         player.setBoundingBox(new Polygon(
-                -5, -5,
-                0, -2,
-                5, -5,
-                0, 5
+                0, -5,
+                5, 5,
+                0, 2,
+                -5, 5
         ));
         player.setX(gameData.getWidth()/2);
         player.setY(gameData.getHeight()/2);

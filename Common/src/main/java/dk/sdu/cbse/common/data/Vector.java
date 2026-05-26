@@ -27,6 +27,16 @@ public class Vector {
         this.y = y;
     }
 
+    public double magnitude(){
+        return Math.sqrt(x*x + y*y);
+    }
+
+    public Vector scale(double s){
+        this.x = x * s;
+        this.y = y * s;
+        return this;
+    }
+
     public Vector add(Vector other){
         x = x + other.x;
         y = y + other.y;
@@ -38,5 +48,10 @@ public class Vector {
         other.setY(-other.getY());
 
         return this.add(other);
+    }
+
+    @Override
+    public String toString(){
+        return "(" + x + ", " + y + ")";
     }
 }
