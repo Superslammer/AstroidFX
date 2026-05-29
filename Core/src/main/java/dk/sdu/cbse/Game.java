@@ -8,7 +8,6 @@ import dk.sdu.cbse.common.services.IGamePluginService;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -100,9 +99,9 @@ public class Game {
                 polygons.put(entityToAdd, polygon);
                 worldWindow.getChildren().add(polygon);
                 // Color the polygons
-                polygon.setFill(Color.TRANSPARENT);
-                polygon.setStroke(Color.BLACK);
-                polygon.setStrokeWidth(2d);
+                //polygon.setFill(Color.TRANSPARENT);
+                //polygon.setStroke(Color.BLACK);
+                //polygon.setStrokeWidth(2d);
             }
 
             // Move all polygons to entity pos

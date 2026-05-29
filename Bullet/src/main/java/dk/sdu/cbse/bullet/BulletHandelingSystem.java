@@ -7,6 +7,7 @@ import dk.sdu.cbse.common.data.Vector;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.bullet.IBulletSPI;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class BulletHandelingSystem implements IEntityProccessingService, IBulletSPI {
@@ -24,14 +25,19 @@ public class BulletHandelingSystem implements IEntityProccessingService, IBullet
         double magnitude = BULLET_SPEED;
         vel.setX(magnitude * Math.sin(Math.toRadians(newBullet.getAngle())));
         vel.setY(magnitude * -Math.cos(Math.toRadians(newBullet.getAngle())));
-
         newBullet.setVelocity(vel);
-        newBullet.setBoundingBox(new Polygon(
+
+        // Create bullet polygon
+        Polygon sprite = new Polygon(
                 1, 1,
                 1, -1,
                 -1, -1,
                 -1, 1
-        ));
+        );
+        sprite.setFill(Color.TRANSPARENT);
+        sprite.setStroke(Color.BLACK);
+        sprite.setStrokeWidth(2d);
+        newBullet.setBoundingBox(sprite);
         return newBullet;
     }
 
