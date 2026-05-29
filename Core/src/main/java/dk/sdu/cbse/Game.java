@@ -2,21 +2,22 @@ package dk.sdu.cbse;
 
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
+import dk.sdu.cbse.common.data.Vector;
 import dk.sdu.cbse.common.data.World;
+import dk.sdu.cbse.common.enemy.IEnemySPI;
 import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 public class Game {
     private final World world = new World();
@@ -40,6 +41,7 @@ public class Game {
         worldWindow.getChildren().add(text);
 
         Scene gameScene = new Scene(worldWindow);
+        gameScene.setFill(Color.BLACK);
 
         // Handle key presses
         gameScene.setOnKeyPressed(keyEvent -> gameData.pressKey(keyEvent.getCode()));
@@ -49,6 +51,12 @@ public class Game {
         for(IGamePluginService pluginService : gamePluginServices){
             pluginService.init(gameData, world);
         }
+
+
+        Stream<IEnemySPI> tmp = ServiceLoader.load(IEnemySPI.class).stream().map(ServiceLoader.Provider::get);
+        tmp.findFirst().ifPresent(
+                spi -> world.addEntity(spi.createEnemy(new Vector(0, gameData.getHeight()/2), 90-20))
+        );
 
         // Render initial polygons
         draw();

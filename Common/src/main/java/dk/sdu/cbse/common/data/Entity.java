@@ -7,9 +7,9 @@ import java.util.UUID;
 public class Entity {
     private final UUID ID = UUID.randomUUID();
 
-    private double x = 0;
-    private double y = 0;
-    private double angle = 0;
+    protected double x = 0;
+    protected double y = 0;
+    protected double angle = 0;
     private Vector velocity = new Vector();
     private Polygon sprite = new Polygon();
 

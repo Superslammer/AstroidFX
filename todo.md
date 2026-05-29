@@ -1,0 +1,2 @@
+- [ ] Document IGamePluginService, IEntityProcessorService (and IPostEntityProcessorService)
+- 
