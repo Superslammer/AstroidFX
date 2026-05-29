@@ -22,7 +22,7 @@ public class PlayerPlugin implements IGamePluginService {
         sprite.setFill(Color.TRANSPARENT);
         sprite.setStroke(Color.BLACK);
         sprite.setStrokeWidth(2d);
-        player.setBoundingBox(sprite);
+        player.setSprite(sprite);
 
         player.setX(gameData.getWidth()/2);
         player.setY(gameData.getHeight()/2);

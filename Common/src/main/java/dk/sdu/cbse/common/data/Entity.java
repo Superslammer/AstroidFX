@@ -11,7 +11,7 @@ public class Entity {
     private double y = 0;
     private double angle = 0;
     private Vector velocity = new Vector();
-    private Polygon boundingBox = new Polygon();
+    private Polygon sprite = new Polygon();
 
     public String getID() {
         return ID.toString();
@@ -49,11 +49,20 @@ public class Entity {
         this.velocity = velocity;
     }
 
-    public Polygon getBoundingBox() {
-        return boundingBox;
+    public Polygon getSprite() {
+        return sprite;
     }
 
-    public void setBoundingBox(Polygon boundingBox) {
-        this.boundingBox = boundingBox;
+    public void setSprite(Polygon boundingBox) {
+        this.sprite = boundingBox;
+    }
+
+    public void setPosition(Vector pos){
+        x = pos.getX();
+        y = pos.getY();
+    }
+
+    public Vector getPosition(){
+        return new Vector(x, y);
     }
 }

@@ -95,7 +95,7 @@ public class Game {
             // Add new polygons
             Polygon polygon = polygons.get(entityToAdd);
             if (polygon == null) {
-                polygon = entityToAdd.getBoundingBox();
+                polygon = entityToAdd.getSprite();
                 polygons.put(entityToAdd, polygon);
                 worldWindow.getChildren().add(polygon);
                 // Color the polygons
