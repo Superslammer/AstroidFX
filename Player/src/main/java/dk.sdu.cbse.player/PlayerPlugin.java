@@ -20,7 +20,7 @@ public class PlayerPlugin implements IGamePluginService {
                 -5, 5
         );
         sprite.setFill(Color.TRANSPARENT);
-        sprite.setStroke(Color.BLACK);
+        sprite.setStroke(Color.WHITE);
         sprite.setStrokeWidth(2d);
         player.setSprite(sprite);
 

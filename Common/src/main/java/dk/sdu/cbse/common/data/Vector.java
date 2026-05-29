@@ -50,6 +50,11 @@ public class Vector {
         return this.add(other);
     }
 
+    public Vector normalize(){
+        double s = 1/magnitude();
+        return scale(s);
+    }
+
     @Override
     public String toString(){
         return "(" + x + ", " + y + ")";

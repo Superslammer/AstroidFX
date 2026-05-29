@@ -50,7 +50,7 @@ public class PlayerHandelingSystem implements IEntityProccessingService {
             }
             if(gameData.isShoot() && currentBulletCooldown <= 0){
                 getBulletSPIs().findFirst().ifPresent(
-                        spi -> world.addEntity(spi.createBullet(player, gameData))
+                        spi -> world.addEntity(spi.createBullet(player))
                 );
                 currentBulletCooldown = BULLET_COOLDOWN_SECONDS;
             }

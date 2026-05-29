@@ -14,7 +14,7 @@ public class BulletHandelingSystem implements IEntityProccessingService, IBullet
     private static final double BULLET_SPEED = 2d;
 
     @Override
-    public Bullet createBullet(Entity shooter, GameData gameData) {
+    public Bullet createBullet(Entity shooter) {
         Bullet newBullet = new Bullet();
         newBullet.setAngle(shooter.getAngle());
         newBullet.setX(shooter.getX());
@@ -35,9 +35,9 @@ public class BulletHandelingSystem implements IEntityProccessingService, IBullet
                 -1, 1
         );
         sprite.setFill(Color.TRANSPARENT);
-        sprite.setStroke(Color.BLACK);
+        sprite.setStroke(Color.WHITE);
         sprite.setStrokeWidth(2d);
-        newBullet.setBoundingBox(sprite);
+        newBullet.setSprite(sprite);
         return newBullet;
     }
 
