@@ -11,12 +11,14 @@
 
     <modules>
         <module>Core</module>
-        <module>Bullet</module>
+        <module>Common</module>
+        <module>CommonAsteroid</module>
         <module>CommonBullet</module>
         <module>CommonEnemy</module>
-        <module>Common</module>
+        <module>Bullet</module>
         <module>Enemy</module>
         <module>Player</module>
+        <module>Asteroid</module>
     </modules>
 
     <properties>

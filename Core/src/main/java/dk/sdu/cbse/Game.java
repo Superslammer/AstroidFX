@@ -84,7 +84,7 @@ public class Game {
         }
     }
 
-    private static final double ENEMY_SPAWN_TIME = 1d;
+    private static final double ENEMY_SPAWN_TIME = 10d;
     private double enemySpawnCooldown = 0;
 
     private void spawnEnemies(){
