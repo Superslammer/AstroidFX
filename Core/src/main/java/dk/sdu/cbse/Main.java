@@ -1,5 +1,6 @@
 package dk.sdu.cbse;
 
+import dk.sdu.cbse.common.enemy.IEnemySPI;
 import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import javafx.application.Application;
@@ -16,7 +17,7 @@ public class Main extends Application{
 
     @Override
     public void start(Stage window) throws Exception {
-        Game game = new Game(getGamePlugins(), getProccessingServices());
+        Game game = new Game(getGamePlugins(), getProccessingServices(), getEnemySPIs());
         game.start(window);
         game.render();
     }
@@ -30,6 +31,12 @@ public class Main extends Application{
     private List<IEntityProccessingService> getProccessingServices(){
         List<IEntityProccessingService> services = new ArrayList<>();
         ServiceLoader.load(IEntityProccessingService.class).forEach(services::add);
+        return services;
+    }
+
+    private List<IEnemySPI> getEnemySPIs(){
+        List<IEnemySPI> services = new ArrayList<>();
+        ServiceLoader.load(IEnemySPI.class).forEach(services::add);
         return services;
     }
 }

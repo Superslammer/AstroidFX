@@ -47,10 +47,10 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
     }
 
     private boolean isOutsideWindow(Enemy enemy, double width, double height){
-        if (enemy.getX() > width || enemy.getX() < 0){
-            return false;
+        if (enemy.getX() > width + 50 || enemy.getX() < -50){
+            return true;
         }
-        return !(enemy.getY() > height) && !(enemy.getY() < 0);
+        return (enemy.getY() > height + 50) && !(enemy.getY() < -50);
     }
 
     @Override

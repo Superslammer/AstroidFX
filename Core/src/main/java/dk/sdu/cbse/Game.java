@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 public class Game {
     private final World world = new World();
@@ -27,12 +26,14 @@ public class Game {
 
     private final List<IGamePluginService> gamePluginServices;
     private final List<IEntityProccessingService> entityProccessingServices;
+    private final List<IEnemySPI> enemySPIS;
 
     private long lastFrameTime = -1;
 
-    Game(List<IGamePluginService> gamePluginServices, List<IEntityProccessingService> entityProccessingServices){
+    Game(List<IGamePluginService> gamePluginServices, List<IEntityProccessingService> entityProccessingServices, List<IEnemySPI> enemySPIS){
         this.gamePluginServices = gamePluginServices;
         this.entityProccessingServices = entityProccessingServices;
+        this.enemySPIS = enemySPIS;
     }
 
     public void start(Stage window) {
@@ -51,12 +52,6 @@ public class Game {
         for(IGamePluginService pluginService : gamePluginServices){
             pluginService.init(gameData, world);
         }
-
-
-        Stream<IEnemySPI> tmp = ServiceLoader.load(IEnemySPI.class).stream().map(ServiceLoader.Provider::get);
-        tmp.findFirst().ifPresent(
-                spi -> world.addEntity(spi.createEnemy(new Vector(0, gameData.getHeight()/2), 90-20))
-        );
 
         // Render initial polygons
         draw();
@@ -83,8 +78,54 @@ public class Game {
     }
 
     private void update(){
+        spawnEnemies();
         for(IEntityProccessingService service : entityProccessingServices){
             service.proccess(gameData, world);
+        }
+    }
+
+    private static final double ENEMY_SPAWN_TIME = 1d;
+    private double enemySpawnCooldown = 0;
+
+    private void spawnEnemies(){
+        enemySpawnCooldown -= gameData.getDeltaT();
+
+        if (enemySpawnCooldown <= 0 && !enemySPIS.isEmpty()){
+            Random rng = new Random();
+            IEnemySPI spi = enemySPIS.get(rng.nextInt(enemySPIS.size()));
+
+            int spawnSide = rng.nextInt(4);
+            Vector startPos = new Vector();
+            double angle = 0;
+            if (spawnSide == 0){
+                // Left side
+                startPos.setX(-50);
+                startPos.setY(rng.nextInt((int)(gameData.getHeight()/2 - 100), (int)(gameData.getHeight()/2 + 101)));
+
+                angle = 90;
+            } else if (spawnSide == 1) {
+                // Top side
+                startPos.setY(-50);
+                startPos.setX(rng.nextInt((int)(gameData.getWidth()/2 - 100), (int)(gameData.getWidth()/2 + 101)));
+
+                angle = 180;
+            } else if (spawnSide == 2) {
+                // Right side
+                startPos.setX(gameData.getWidth() + 50);
+                startPos.setY(rng.nextInt((int)(gameData.getHeight()/2 - 100), (int)(gameData.getHeight()/2 + 101)));
+
+                angle = 270;
+            } else {
+                // Bottom side
+                startPos.setY(gameData.getHeight() + 50);
+                startPos.setX(rng.nextInt((int)(gameData.getWidth()/2 - 100), (int)(gameData.getWidth()/2 + 100)));
+
+                angle = 0;
+            }
+
+            angle = rng.nextDouble(angle-30, angle + 31);
+            world.addEntity(spi.createEnemy(startPos, angle));
+            enemySpawnCooldown = ENEMY_SPAWN_TIME;
         }
     }
 
@@ -119,5 +160,4 @@ public class Game {
         }
 
     }
-
 }
