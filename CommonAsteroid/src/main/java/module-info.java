@@ -1,5 +1,5 @@
 module CommonAsteroid{
-    exports dk.sdu.cbse.common.asteroid;
     requires Common;
 
+    exports dk.sdu.cbse.common.asteroid;
 }

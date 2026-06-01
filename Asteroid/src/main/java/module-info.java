@@ -5,6 +5,7 @@ import dk.sdu.cbse.common.services.IEntityProccessingService;
 module Asteroid {
     requires Common;
     requires CommonAsteroid;
+    requires javafx.graphics;
 
     provides IEntityProccessingService with AsteroidHandelingSystem;
     provides IAsteroidSPI with AsteroidHandelingSystem;

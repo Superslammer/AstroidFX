@@ -42,7 +42,7 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
             enemy.setY(enemy.getY() + vel.getY() * deltaT);
 
             // Lower timeout
-            enemy.subtractFromTimout(deltaT);
+            enemy.subtractFromTimeout(deltaT);
         }
     }
 

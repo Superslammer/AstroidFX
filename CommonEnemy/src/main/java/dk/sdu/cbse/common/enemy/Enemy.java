@@ -18,7 +18,7 @@ public class Enemy extends Entity {
         return MOVEMENT_SPEED;
     }
 
-    public void subtractFromTimout(double deltaT) {
+    public void subtractFromTimeout(double deltaT) {
         timeoutTimer -= deltaT;
     }
 
