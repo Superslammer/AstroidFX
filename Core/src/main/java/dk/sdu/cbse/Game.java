@@ -13,7 +13,6 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -193,26 +192,7 @@ public class Game {
         }
     }
 
-    private List<Circle> hitBoxes = new ArrayList<>();
     private void draw(){
-        // Remove and set hitboxes
-        for (Circle hitBox : hitBoxes){
-            worldWindow.getChildren().remove(hitBox);
-        }
-        hitBoxes.clear();
-
-        for (Entity entity : world.getEntities()){
-            Circle hitbox = new Circle();
-            hitbox.setRadius(entity.getHitBox());
-            hitbox.setTranslateX(entity.getX());
-            hitbox.setTranslateY(entity.getY());
-            hitbox.setFill(Color.TRANSPARENT);
-            hitbox.setStroke(Color.BLUE);
-            hitbox.setStrokeWidth(2d);
-            worldWindow.getChildren().add(hitbox);
-            hitBoxes.add(hitbox);
-        }
-
         // Remove polygons of non-existant entities
         Set<Entity> drawnEntities = new HashSet<>(polygons.keySet());
         Set<Entity> worldEntities = new HashSet<>(world.getEntities());

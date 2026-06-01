@@ -2,6 +2,7 @@ package dk.sdu.cbse.asteroid;
 
 import dk.sdu.cbse.common.asteroid.Asteroid;
 import dk.sdu.cbse.common.asteroid.IAsteroidSPI;
+import dk.sdu.cbse.common.asteroid.IAsteroidSplitter;
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.Vector;
@@ -18,6 +19,8 @@ public class AsteroidHandelingSystem implements IEntityProccessingService, IAste
     private static final double MAX_SPIN_SPEED = 4d;
     private static final double MIN_SPIN_SPEED = -4d;
 
+    private final IAsteroidSplitter asteroidSplitter = new AsteroidSplitterImpl();
+
     @Override
     public Asteroid createAsteroid(Vector spawnPosition, Vector velocity) {
         Asteroid ast = new Asteroid();
@@ -32,7 +35,7 @@ public class AsteroidHandelingSystem implements IEntityProccessingService, IAste
         Polygon sprite = getSprite();
         ast.setSprite(sprite);
 
-        ast.setHitBox(14);
+        ast.setHitBox(15);
 
         return ast;
     }
@@ -63,6 +66,13 @@ public class AsteroidHandelingSystem implements IEntityProccessingService, IAste
         double deltaT = gameData.getDeltaT();
         for (Entity entity : world.getEntities(Asteroid.class)){
             if(!(entity instanceof Asteroid asteroid)){
+                continue;
+            }
+
+            // Process hit
+            if (asteroid.isHit()){
+                asteroidSplitter.createSplitAsteroid(asteroid, world, gameData);
+                world.removeEntity(asteroid);
                 continue;
             }
 

@@ -11,6 +11,10 @@ public class CollisionDetector implements IPostEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity collider1 : world.getEntities()){
             for (Entity collider2 : world.getEntities()){
+                if (collider1.getClass().equals(collider2.getClass())){
+                     continue;
+                }
+
                 if (collider1.getID().equals(collider2.getID())){
                     continue;
                 }
@@ -37,7 +41,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
     private boolean collides(Entity c1, Entity c2) {
         double dx = c1.getX() - c2.getX();
         double dy = c1.getY() - c2.getY();
-        double radius = c1.getHitBox()/2 + c2.getHitBox()/2;
+        double radius = c1.getHitBox() + c2.getHitBox();
         return (dx * dx + dy * dy) <= (radius * radius);
     }
 }

@@ -4,7 +4,7 @@ import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.Vector;
 
 public class Player extends Entity {
-    private static final double ROTATION_ANGLE = 120d;
+    private static final double ROTATION_ANGLE = 150d;
     private static final double MOVEMENT_SPEED = 2d;
     private static final double MAX_MOVEMENT_SPEED = 255d;
 

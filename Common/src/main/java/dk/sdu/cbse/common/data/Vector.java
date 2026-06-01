@@ -4,6 +4,11 @@ public class Vector {
     private double x;
     private double y;
 
+    public Vector(Vector vec){
+        x = vec.x;
+        y = vec.y;
+    }
+
     public Vector(double x, double y){
         this.x = x;
         this.y = y;
@@ -53,6 +58,13 @@ public class Vector {
     public Vector normalize(){
         double s = 1/magnitude();
         return scale(s);
+    }
+
+    public Vector rotate(double degrees){
+        double angle = Math.toRadians(-degrees);
+        x = x * Math.cos(angle) - y * Math.sin(angle);
+        y = x * Math.sin(angle) + y * Math.cos(angle);
+        return this;
     }
 
     @Override

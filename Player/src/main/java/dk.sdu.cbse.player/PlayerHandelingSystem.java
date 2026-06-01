@@ -25,6 +25,11 @@ public class PlayerHandelingSystem implements IEntityProccessingService {
                 continue;
             }
 
+            if (player.isHit()){
+                world.removeEntity(player);
+                continue;
+            }
+
             // Handle player input
             if(gameData.isLeft()){
                 player.setAngle(player.getAngle() - player.getRotationAngle() * deltaT);
