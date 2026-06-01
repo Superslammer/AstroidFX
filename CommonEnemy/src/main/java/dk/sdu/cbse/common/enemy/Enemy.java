@@ -6,6 +6,7 @@ public class Enemy extends Entity {
     private static final double BOUNCE_ANGLE = 10d;
     private static final double BOUNCE_COOLDOWN_TIME = 1d;
     private static final double MOVEMENT_SPEED = 200d;
+    private double timeoutTimer= 1d;
     private double currentBounceCooldown = 0;
     private boolean isBounceUp = true;
 
@@ -15,6 +16,14 @@ public class Enemy extends Entity {
 
     public double getMovementSpeed() {
         return MOVEMENT_SPEED;
+    }
+
+    public void subtractFromTimout(double deltaT) {
+        timeoutTimer -= deltaT;
+    }
+
+    public double getTimeout(){
+        return timeoutTimer;
     }
 
     public void processBounce(double dTime){

@@ -19,6 +19,12 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
                 continue;
             }
 
+            // Remove if outside window
+            if (enemy.getTimeout() <= 0 && isOutsideWindow(enemy, gameData.getWidth(), gameData.getHeight())) {
+                world.removeEntity(entity);
+                return;
+            }
+
             // Change flight angle
             enemy.processBounce(deltaT);
 
@@ -35,7 +41,16 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
             enemy.setX(enemy.getX() + vel.getX() * deltaT);
             enemy.setY(enemy.getY() + vel.getY() * deltaT);
 
+            // Lower timeout
+            enemy.subtractFromTimout(deltaT);
         }
+    }
+
+    private boolean isOutsideWindow(Enemy enemy, double width, double height){
+        if (enemy.getX() > width || enemy.getX() < 0){
+            return false;
+        }
+        return !(enemy.getY() > height) && !(enemy.getY() < 0);
     }
 
     @Override

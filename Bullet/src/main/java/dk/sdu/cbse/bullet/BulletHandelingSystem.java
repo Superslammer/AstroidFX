@@ -52,9 +52,11 @@ public class BulletHandelingSystem implements IEntityProccessingService, IBullet
 
             if (bullet.getX() > gameData.getWidth() || bullet.getX() < 0){
                 world.removeEntity(bullet);
+                return;
             }
             if (bullet.getY() > gameData.getHeight() || bullet.getY() < 0){
                 world.removeEntity(bullet);
+                return;
             }
         }
     }
