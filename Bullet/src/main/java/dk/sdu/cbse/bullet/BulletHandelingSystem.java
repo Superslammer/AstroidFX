@@ -53,12 +53,9 @@ public class BulletHandelingSystem implements IEntityProccessingService, IBullet
             }
 
             // Remove bullet if hit
-            if (bullet.isHit() && bullet.getITime() <= 0){
+            if (bullet.isHit()){
                 world.removeEntity(bullet);
                 continue;
-            }
-            else {
-                bullet.setHit(false);
             }
 
             // Remove bullet if outside window

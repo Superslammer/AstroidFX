@@ -7,6 +7,7 @@ public class GameData {
     private static final double HEIGHT = 800;
 
     private double deltaT = 0;
+    private String playerID = "";
 
     private boolean left = false;
     private boolean right = false;
@@ -38,6 +39,17 @@ public class GameData {
         else if(code == KeyCode.SPACE){
             shoot = true;
         }
+    }
+
+    public String getPlayerID() {
+        return playerID;
+    }
+
+    public void setPlayerID(String playerID) {
+        if (playerID.isEmpty()){
+            return;
+        }
+        this.playerID = playerID;
     }
 
     public void releaseKey(KeyCode code){

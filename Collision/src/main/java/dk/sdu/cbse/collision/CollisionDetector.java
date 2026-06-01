@@ -1,5 +1,6 @@
 package dk.sdu.cbse.collision;
 
+import dk.sdu.cbse.common.bullet.Bullet;
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
@@ -14,13 +15,23 @@ public class CollisionDetector implements IPostEntityProcessingService {
                     continue;
                 }
 
-                if (collides(collider1, collider2)){
+                if (collides(collider1, collider2) && !isPlayerBulletCol(collider1, collider2, gameData.getPlayerID())){
                     collider1.setHit(true);
                     collider2.setHit(true);
-                    //System.out.println(collider1.getID() + ": " + collider2.getID());
                 }
             }
         }
+    }
+
+    private boolean isPlayerBulletCol(Entity c1, Entity c2, String playerID){
+        if (c1 instanceof Bullet && c2.getID().equals(playerID)){
+            return true;
+        }
+        if (c2 instanceof Bullet && c1.getID().equals(playerID)){
+            return true;
+        }
+
+        return false;
     }
 
     private boolean collides(Entity c1, Entity c2) {

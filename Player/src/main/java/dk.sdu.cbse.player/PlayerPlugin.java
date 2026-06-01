@@ -29,6 +29,8 @@ public class PlayerPlugin implements IGamePluginService {
 
         player.setHitBox(6);
 
+        gameData.setPlayerID(player.getID());
+
         world.addEntity(player);
     }
 
