@@ -22,11 +22,11 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
         velUp.rotate(-30);
         astUp.setVelocity(velUp);
 
-        astUp.setHitBox(asteroid.getHitBox()/2);
-
         Polygon spriteUp = createPolygon(newScale, copyPolygon(originalSprite));
         astUp.setSprite(spriteUp);
 
+        astUp.setLife(asteroid.getLife()-1);
+        astUp.setHitBox(asteroid.getHitBox()/2);
         astUp.setRotationSpeed(asteroid.getRotationSpeed()*2);
 
         world.addEntity(astUp);
@@ -39,12 +39,12 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
         velDown.rotate(30);
         astDown.setVelocity(velDown);
 
-        astDown.setHitBox(asteroid.getHitBox()/2);
-
         Polygon spriteDown = createPolygon(newScale, copyPolygon(originalSprite));
         astDown.setSprite(spriteDown);
 
+        astDown.setLife(asteroid.getLife()-1);
         astDown.setRotationSpeed(asteroid.getRotationSpeed()*2);
+        astDown.setHitBox(asteroid.getHitBox()/2);
 
         world.addEntity(astDown);
 

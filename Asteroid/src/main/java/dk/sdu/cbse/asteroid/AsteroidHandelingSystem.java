@@ -71,7 +71,9 @@ public class AsteroidHandelingSystem implements IEntityProccessingService, IAste
 
             // Process hit
             if (asteroid.isHit()){
-                asteroidSplitter.createSplitAsteroid(asteroid, world, gameData);
+                if (asteroid.getLife() > 0){
+                    asteroidSplitter.createSplitAsteroid(asteroid, world, gameData);
+                }
                 world.removeEntity(asteroid);
                 continue;
             }
