@@ -8,10 +8,12 @@ import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.enemy.IEnemySPI;
 import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
+import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -26,15 +28,19 @@ public class Game {
     private final Map<Entity, Polygon> polygons = new ConcurrentHashMap<>();
 
     private final List<IGamePluginService> gamePluginServices;
-    private final List<IEntityProccessingService> entityProccessingServices;
+    private final List<IEntityProccessingService> entityProcessingServices;
+    private final List<IPostEntityProcessingService> postEntityProcessingServices;
     private final List<IEnemySPI> enemySPIS;
     private final List<IAsteroidSPI> asteroidSPIS;
 
     private long lastFrameTime = -1;
 
-    Game(List<IGamePluginService> gamePluginServices, List<IEntityProccessingService> entityProccessingServices, List<IEnemySPI> enemySPIS, List<IAsteroidSPI> asteroidSPIS){
+    Game(List<IGamePluginService> gamePluginServices, List<IEntityProccessingService> entityProccessingServices,
+         List<IPostEntityProcessingService> postEntityProcessingServices ,List<IEnemySPI> enemySPIS,
+         List<IAsteroidSPI> asteroidSPIS){
         this.gamePluginServices = gamePluginServices;
-        this.entityProccessingServices = entityProccessingServices;
+        this.entityProcessingServices = entityProccessingServices;
+        this.postEntityProcessingServices = postEntityProcessingServices;
         this.enemySPIS = enemySPIS;
         this.asteroidSPIS = asteroidSPIS;
     }
@@ -83,8 +89,13 @@ public class Game {
     private void update(){
         spawnEnemies();
         spawnAsteroids();
-        for(IEntityProccessingService service : entityProccessingServices){
+
+        for(IEntityProccessingService service : entityProcessingServices){
             service.proccess(gameData, world);
+        }
+
+        for(IPostEntityProcessingService service : postEntityProcessingServices){
+            service.process(gameData, world);
         }
     }
 
@@ -133,7 +144,7 @@ public class Game {
         }
     }
 
-    private static final double ASTEROID_SPAWN_TIME = 1d;
+    private static final double ASTEROID_SPAWN_TIME = 2.5d;
     private double asteroidSpawnCooldown = 0;
     private void spawnAsteroids(){
         asteroidSpawnCooldown -= gameData.getDeltaT();
@@ -182,7 +193,26 @@ public class Game {
         }
     }
 
+    private List<Circle> hitBoxes = new ArrayList<>();
     private void draw(){
+        // Remove and set hitboxes
+        for (Circle hitBox : hitBoxes){
+            worldWindow.getChildren().remove(hitBox);
+        }
+        hitBoxes.clear();
+
+        for (Entity entity : world.getEntities()){
+            Circle hitbox = new Circle();
+            hitbox.setRadius(entity.getHitBox());
+            hitbox.setTranslateX(entity.getX());
+            hitbox.setTranslateY(entity.getY());
+            hitbox.setFill(Color.TRANSPARENT);
+            hitbox.setStroke(Color.BLUE);
+            hitbox.setStrokeWidth(2d);
+            worldWindow.getChildren().add(hitbox);
+            hitBoxes.add(hitbox);
+        }
+
         // Remove polygons of non-existant entities
         Set<Entity> drawnEntities = new HashSet<>(polygons.keySet());
         Set<Entity> worldEntities = new HashSet<>(world.getEntities());
@@ -200,10 +230,6 @@ public class Game {
                 polygon = entityToAdd.getSprite();
                 polygons.put(entityToAdd, polygon);
                 worldWindow.getChildren().add(polygon);
-                // Color the polygons
-                //polygon.setFill(Color.TRANSPARENT);
-                //polygon.setStroke(Color.BLACK);
-                //polygon.setStrokeWidth(2d);
             }
 
             // Move all polygons to entity pos

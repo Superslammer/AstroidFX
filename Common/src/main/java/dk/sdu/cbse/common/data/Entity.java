@@ -12,6 +12,26 @@ public class Entity {
     protected double angle = 0;
     private Vector velocity = new Vector();
     private Polygon sprite = new Polygon();
+    private double hitBox = 0;
+    private boolean isHit = false;
+
+    public boolean isHit() {
+        return isHit;
+    }
+
+    public void setHit(boolean hit) {
+        isHit = hit;
+    }
+
+
+    public double getHitBox() {
+        return hitBox;
+    }
+
+    public void setHitBox(double hitBox) {
+        this.hitBox = hitBox;
+    }
+
 
     public String getID() {
         return ID.toString();

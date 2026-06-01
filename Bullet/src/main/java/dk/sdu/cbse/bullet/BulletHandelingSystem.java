@@ -38,18 +38,30 @@ public class BulletHandelingSystem implements IEntityProccessingService, IBullet
         sprite.setStroke(Color.WHITE);
         sprite.setStrokeWidth(2d);
         newBullet.setSprite(sprite);
+
+        newBullet.setHitBox(1);
+
         return newBullet;
     }
 
     @Override
     public void proccess(GameData gameData, World world) {
         // Get bullet entities
-        for (Entity bullet : world.getEntities(Bullet.class)){
-            // Move them according to velocity
-            Vector vel = bullet.getVelocity();
-            bullet.setX(bullet.getX() + vel.getX());
-            bullet.setY(bullet.getY() + vel.getY());
+        for (Entity entity : world.getEntities(Bullet.class)){
+            if (!(entity instanceof Bullet bullet)){
+                continue;
+            }
 
+            // Remove bullet if hit
+            if (bullet.isHit() && bullet.getITime() <= 0){
+                world.removeEntity(bullet);
+                continue;
+            }
+            else {
+                bullet.setHit(false);
+            }
+
+            // Remove bullet if outside window
             if (bullet.getX() > gameData.getWidth() || bullet.getX() < 0){
                 world.removeEntity(bullet);
                 return;
@@ -58,6 +70,13 @@ public class BulletHandelingSystem implements IEntityProccessingService, IBullet
                 world.removeEntity(bullet);
                 return;
             }
+
+            // Move them according to velocity
+            Vector vel = bullet.getVelocity();
+            bullet.setX(bullet.getX() + vel.getX());
+            bullet.setY(bullet.getY() + vel.getY());
+
+            bullet.subITime(gameData.getDeltaT());
         }
     }
 }

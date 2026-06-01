@@ -13,6 +13,7 @@ module Core {
     uses IEntityProccessingService;
     uses IEnemySPI;
     uses IAsteroidSPI;
+    uses dk.sdu.cbse.common.services.IPostEntityProcessingService;
 
     exports dk.sdu.cbse;
 }

@@ -4,6 +4,7 @@ import dk.sdu.cbse.common.asteroid.IAsteroidSPI;
 import dk.sdu.cbse.common.enemy.IEnemySPI;
 import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
+import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,7 +19,7 @@ public class Main extends Application{
 
     @Override
     public void start(Stage window) throws Exception {
-        Game game = new Game(getGamePlugins(), getProccessingServices(), getEnemySPIs(), getAsteroidSPIs());
+        Game game = new Game(getGamePlugins(), getProcessingServices(), getPostProcessingService(), getEnemySPIs(), getAsteroidSPIs());
         game.start(window);
         game.render();
     }
@@ -29,9 +30,15 @@ public class Main extends Application{
         return services;
     }
 
-    private List<IEntityProccessingService> getProccessingServices(){
+    private List<IEntityProccessingService> getProcessingServices(){
         List<IEntityProccessingService> services = new ArrayList<>();
         ServiceLoader.load(IEntityProccessingService.class).forEach(services::add);
+        return services;
+    }
+
+    private List<IPostEntityProcessingService> getPostProcessingService(){
+        List<IPostEntityProcessingService> services = new ArrayList<>();
+        ServiceLoader.load(IPostEntityProcessingService.class).forEach(services::add);
         return services;
     }
 

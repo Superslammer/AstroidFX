@@ -32,6 +32,8 @@ public class AsteroidHandelingSystem implements IEntityProccessingService, IAste
         Polygon sprite = getSprite();
         ast.setSprite(sprite);
 
+        ast.setHitBox(14);
+
         return ast;
     }
 

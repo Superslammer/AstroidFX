@@ -19,10 +19,16 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
                 continue;
             }
 
+            // Remove if hit
+            if (enemy.isHit()){
+                world.removeEntity(enemy);
+                continue;
+            }
+
             // Remove if outside window
             if (enemy.getTimeout() <= 0 && isOutsideWindow(enemy, gameData.getWidth(), gameData.getHeight())) {
                 world.removeEntity(entity);
-                return;
+                continue;
             }
 
             // Change flight angle
@@ -72,6 +78,8 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
         sprite.setStroke(Color.RED);
         sprite.setStrokeWidth(2d);
         enemy.setSprite(sprite);
+
+        enemy.setHitBox(9);
 
         return enemy;
     }
