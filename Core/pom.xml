@@ -17,6 +17,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>6.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21.0.2</version>
@@ -66,7 +71,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeArtifactIds>javafx-controls,javafx-graphics,javafx-base</includeArtifactIds>
+                            <!--<includeArtifactIds>javafx-controls,javafx-graphics,javafx-base,spring-context,spring-core,spring-beans</includeArtifactIds>-->
                             <outputDirectory>../mods-mvn</outputDirectory>
                             <stripVersion>false</stripVersion>
                         </configuration>

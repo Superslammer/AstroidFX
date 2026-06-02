@@ -8,6 +8,7 @@ module Core {
     requires Common;
     requires CommonEnemy;
     requires CommonAsteroid;
+    requires spring.context;
 
     uses IGamePluginService;
     uses IEntityProccessingService;
@@ -15,5 +16,7 @@ module Core {
     uses IAsteroidSPI;
     uses dk.sdu.cbse.common.services.IPostEntityProcessingService;
 
-    exports dk.sdu.cbse;
+    opens dk.sdu.cbse.main to spring.core, spring.beans, spring.context, javafx.graphics;
+
+    exports dk.sdu.cbse.main;
 }

@@ -1,4 +1,4 @@
-package dk.sdu.cbse;
+package dk.sdu.cbse.main;
 
 import dk.sdu.cbse.common.asteroid.IAsteroidSPI;
 import dk.sdu.cbse.common.data.Entity;
