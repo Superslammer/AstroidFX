@@ -1,14 +1,27 @@
 package dk.sdu.cbse.collision;
 
+import dk.sdu.cbse.common.asteroid.Asteroid;
 import dk.sdu.cbse.common.bullet.Bullet;
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
+import dk.sdu.cbse.common.enemy.Enemy;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
+import dk.sdu.cbse.scoringclient.spi.IScoringSPI;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
 
 public class CollisionDetector implements IPostEntityProcessingService {
+    private List<IScoringSPI> scoringSPIs = null;
+
     @Override
     public void process(GameData gameData, World world) {
+        if (scoringSPIs == null){
+            scoringSPIs = getScoringSPIs(gameData);
+        }
+
         for (Entity collider1 : world.getEntities()){
             for (Entity collider2 : world.getEntities()){
                 if (collider1.getClass().equals(collider2.getClass())){
@@ -22,6 +35,20 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 if (collides(collider1, collider2) && !isPlayerBulletCol(collider1, collider2, gameData.getPlayerID())){
                     collider1.setHit(true);
                     collider2.setHit(true);
+
+                    if (collider1 instanceof Asteroid || collider2 instanceof Asteroid){
+                        IScoringSPI spi = scoringSPIs.getFirst();
+                        if (spi != null){
+                            spi.addScore(1);
+                        }
+                    }
+
+                    if (collider1 instanceof Enemy || collider2 instanceof Enemy){
+                        IScoringSPI spi = scoringSPIs.getFirst();
+                        if (spi != null){
+                            spi.addScore(5);
+                        }
+                    }
                 }
             }
         }
@@ -43,5 +70,11 @@ public class CollisionDetector implements IPostEntityProcessingService {
         double dy = c1.getY() - c2.getY();
         double radius = c1.getHitBox() + c2.getHitBox();
         return (dx * dx + dy * dy) <= (radius * radius);
+    }
+
+    private List<IScoringSPI> getScoringSPIs(GameData gameData){
+        List<IScoringSPI> spis = new ArrayList<>();
+        ServiceLoader.load(gameData.getPluginLayer(), IScoringSPI.class).forEach(spis::add);
+        return spis;
     }
 }

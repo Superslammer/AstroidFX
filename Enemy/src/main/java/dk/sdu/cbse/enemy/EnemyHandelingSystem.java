@@ -63,7 +63,6 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
         // Spawn new enemies
         if (enemySpawnCooldown <= 0){
             List<IEnemySPI> spis = getEnemySPIs(gameData);
-            System.out.println(spis.size());
             if(!spis.isEmpty()){
                 spawnEnemies(gameData, world, spis);
             }
@@ -112,7 +111,7 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
         world.addEntity(spi.createEnemy(startPos, angle));
     }
 
-    public List<IEnemySPI> getEnemySPIs(GameData gameData){
+    private List<IEnemySPI> getEnemySPIs(GameData gameData){
         List<IEnemySPI> spis = new ArrayList<>();
         ServiceLoader.load(gameData.getPluginLayer(), IEnemySPI.class).forEach(spis::add);
         return spis;
