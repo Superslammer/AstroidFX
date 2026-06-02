@@ -1,7 +1,5 @@
 package dk.sdu.cbse.main;
 
-import dk.sdu.cbse.common.asteroid.IAsteroidSPI;
-import dk.sdu.cbse.common.enemy.IEnemySPI;
 import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
@@ -20,41 +18,27 @@ public class ModuleConfig {
 
     @Bean
     public Game game(){
-        return new Game(getGamePlugins(), getProcessingServices(), getPostProcessingService(), getEnemySPIs(), getAsteroidSPIs());
+        return new Game(gamePlugins(), processingServices(), postProcessingService());
     }
 
     @Bean
-    public List<IGamePluginService> getGamePlugins(){
+    public List<IGamePluginService> gamePlugins(){
         List<IGamePluginService> services = new ArrayList<>();
         ServiceLoader.load(IGamePluginService.class).forEach(services::add);
         return services;
     }
 
     @Bean
-    public List<IEntityProccessingService> getProcessingServices(){
+    public List<IEntityProccessingService> processingServices(){
         List<IEntityProccessingService> services = new ArrayList<>();
         ServiceLoader.load(IEntityProccessingService.class).forEach(services::add);
         return services;
     }
 
     @Bean
-    public List<IPostEntityProcessingService> getPostProcessingService(){
+    public List<IPostEntityProcessingService> postProcessingService(){
         List<IPostEntityProcessingService> services = new ArrayList<>();
         ServiceLoader.load(IPostEntityProcessingService.class).forEach(services::add);
         return services;
-    }
-
-    @Bean
-    public List<IEnemySPI> getEnemySPIs(){
-        List<IEnemySPI> spis = new ArrayList<>();
-        ServiceLoader.load(IEnemySPI.class).forEach(spis::add);
-        return spis;
-    }
-
-    @Bean
-    public List<IAsteroidSPI> getAsteroidSPIs(){
-        List<IAsteroidSPI> spis = new ArrayList<>();
-        ServiceLoader.load(IAsteroidSPI.class).forEach(spis::add);
-        return spis;
     }
 }

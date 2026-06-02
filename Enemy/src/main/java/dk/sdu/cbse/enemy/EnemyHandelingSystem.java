@@ -10,7 +10,16 @@ import dk.sdu.cbse.common.services.IEntityProccessingService;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.ServiceLoader;
+
 public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySPI {
+    private static final double ENEMY_SPAWN_TIME = 10d;
+    private double enemySpawnCooldown = 0;
+
+
     @Override
     public void proccess(GameData gameData, World world) {
         double deltaT = gameData.getDeltaT();
@@ -50,6 +59,60 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
             // Lower timeout
             enemy.subtractFromTimeout(deltaT);
         }
+
+        // Spawn new enemies
+        if (enemySpawnCooldown <= 0){
+            List<IEnemySPI> spis = getEnemySPIs();
+            if(!spis.isEmpty()){
+                spawnEnemies(gameData, world, spis);
+            }
+
+            enemySpawnCooldown = ENEMY_SPAWN_TIME;
+        }
+    }
+
+    private void spawnEnemies(GameData gameData, World world, List<IEnemySPI> enemySPIS){
+        Random rng = new Random();
+        IEnemySPI spi = enemySPIS.get(rng.nextInt(enemySPIS.size()));
+
+        int spawnSide = rng.nextInt(4);
+        Vector startPos = new Vector();
+        double angle = 0;
+        if (spawnSide == 0){
+            // Left side
+            startPos.setX(-50);
+            startPos.setY(rng.nextInt((int)(gameData.getHeight()/2 - 100), (int)(gameData.getHeight()/2 + 101)));
+
+            angle = 90;
+        } else if (spawnSide == 1) {
+            // Top side
+            startPos.setY(-50);
+            startPos.setX(rng.nextInt((int)(gameData.getWidth()/2 - 100), (int)(gameData.getWidth()/2 + 101)));
+
+            angle = 180;
+        } else if (spawnSide == 2) {
+            // Right side
+            startPos.setX(gameData.getWidth() + 50);
+            startPos.setY(rng.nextInt((int)(gameData.getHeight()/2 - 100), (int)(gameData.getHeight()/2 + 101)));
+
+            angle = 270;
+        } else {
+            // Bottom side
+            startPos.setY(gameData.getHeight() + 50);
+            startPos.setX(rng.nextInt((int)(gameData.getWidth()/2 - 100), (int)(gameData.getWidth()/2 + 100)));
+
+            angle = 0;
+        }
+
+        angle = rng.nextDouble(angle-30, angle + 31);
+        world.addEntity(spi.createEnemy(startPos, angle));
+        enemySpawnCooldown = ENEMY_SPAWN_TIME;
+    }
+
+    public List<IEnemySPI> getEnemySPIs(){
+        List<IEnemySPI> spis = new ArrayList<>();
+        ServiceLoader.load(IEnemySPI.class).forEach(spis::add);
+        return spis;
     }
 
     private boolean isOutsideWindow(Enemy enemy, double width, double height){

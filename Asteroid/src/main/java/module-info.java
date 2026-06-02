@@ -9,6 +9,8 @@ module Asteroid {
     requires CommonAsteroid;
     requires javafx.graphics;
 
+    uses IAsteroidSPI;
+
     provides IEntityProccessingService with AsteroidHandelingSystem;
     provides IAsteroidSPI with AsteroidHandelingSystem;
     provides IAsteroidSplitter with AsteroidSplitterImpl;

@@ -1,11 +1,8 @@
 package dk.sdu.cbse.main;
 
-import dk.sdu.cbse.common.asteroid.IAsteroidSPI;
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
-import dk.sdu.cbse.common.data.Vector;
 import dk.sdu.cbse.common.data.World;
-import dk.sdu.cbse.common.enemy.IEnemySPI;
 import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
@@ -16,10 +13,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Component
 public class Game {
     private final World world = new World();
     private final Pane worldWindow = new Pane();
@@ -29,19 +29,14 @@ public class Game {
     private final List<IGamePluginService> gamePluginServices;
     private final List<IEntityProccessingService> entityProcessingServices;
     private final List<IPostEntityProcessingService> postEntityProcessingServices;
-    private final List<IEnemySPI> enemySPIS;
-    private final List<IAsteroidSPI> asteroidSPIS;
-
     private long lastFrameTime = -1;
 
+    @Autowired
     Game(List<IGamePluginService> gamePluginServices, List<IEntityProccessingService> entityProccessingServices,
-         List<IPostEntityProcessingService> postEntityProcessingServices ,List<IEnemySPI> enemySPIS,
-         List<IAsteroidSPI> asteroidSPIS){
+         List<IPostEntityProcessingService> postEntityProcessingServices){
         this.gamePluginServices = gamePluginServices;
         this.entityProcessingServices = entityProccessingServices;
         this.postEntityProcessingServices = postEntityProcessingServices;
-        this.enemySPIS = enemySPIS;
-        this.asteroidSPIS = asteroidSPIS;
     }
 
     public void start(Stage window) {
@@ -86,109 +81,12 @@ public class Game {
     }
 
     private void update(){
-        spawnEnemies();
-        spawnAsteroids();
-
         for(IEntityProccessingService service : entityProcessingServices){
             service.proccess(gameData, world);
         }
 
         for(IPostEntityProcessingService service : postEntityProcessingServices){
             service.process(gameData, world);
-        }
-    }
-
-    private static final double ENEMY_SPAWN_TIME = 10d;
-    private double enemySpawnCooldown = 0;
-
-    private void spawnEnemies(){
-        enemySpawnCooldown -= gameData.getDeltaT();
-
-        if (enemySpawnCooldown <= 0 && !enemySPIS.isEmpty()){
-            Random rng = new Random();
-            IEnemySPI spi = enemySPIS.get(rng.nextInt(enemySPIS.size()));
-
-            int spawnSide = rng.nextInt(4);
-            Vector startPos = new Vector();
-            double angle = 0;
-            if (spawnSide == 0){
-                // Left side
-                startPos.setX(-50);
-                startPos.setY(rng.nextInt((int)(gameData.getHeight()/2 - 100), (int)(gameData.getHeight()/2 + 101)));
-
-                angle = 90;
-            } else if (spawnSide == 1) {
-                // Top side
-                startPos.setY(-50);
-                startPos.setX(rng.nextInt((int)(gameData.getWidth()/2 - 100), (int)(gameData.getWidth()/2 + 101)));
-
-                angle = 180;
-            } else if (spawnSide == 2) {
-                // Right side
-                startPos.setX(gameData.getWidth() + 50);
-                startPos.setY(rng.nextInt((int)(gameData.getHeight()/2 - 100), (int)(gameData.getHeight()/2 + 101)));
-
-                angle = 270;
-            } else {
-                // Bottom side
-                startPos.setY(gameData.getHeight() + 50);
-                startPos.setX(rng.nextInt((int)(gameData.getWidth()/2 - 100), (int)(gameData.getWidth()/2 + 100)));
-
-                angle = 0;
-            }
-
-            angle = rng.nextDouble(angle-30, angle + 31);
-            world.addEntity(spi.createEnemy(startPos, angle));
-            enemySpawnCooldown = ENEMY_SPAWN_TIME;
-        }
-    }
-
-    private static final double ASTEROID_SPAWN_TIME = 2.5d;
-    private double asteroidSpawnCooldown = 0;
-    private void spawnAsteroids(){
-        asteroidSpawnCooldown -= gameData.getDeltaT();
-
-        if (asteroidSpawnCooldown <= 0 && !asteroidSPIS.isEmpty()){
-            Random rng = new Random();
-            IAsteroidSPI spi = asteroidSPIS.get(rng.nextInt(asteroidSPIS.size()));
-
-            int spawnSide = rng.nextInt(4);
-            Vector startPos = new Vector();
-            double angle = 0;
-            if (spawnSide == 0){
-                // Left side
-                startPos.setX(-50);
-                startPos.setY(rng.nextInt((int)(gameData.getHeight()/2 - 100), (int)(gameData.getHeight()/2 + 101)));
-
-                angle = 90;
-            } else if (spawnSide == 1) {
-                // Top side
-                startPos.setY(-50);
-                startPos.setX(rng.nextInt((int)(gameData.getWidth()/2 - 100), (int)(gameData.getWidth()/2 + 101)));
-
-                angle = 180;
-            } else if (spawnSide == 2) {
-                // Right side
-                startPos.setX(gameData.getWidth() + 50);
-                startPos.setY(rng.nextInt((int)(gameData.getHeight()/2 - 100), (int)(gameData.getHeight()/2 + 101)));
-
-                angle = 270;
-            } else {
-                // Bottom side
-                startPos.setY(gameData.getHeight() + 50);
-                startPos.setX(rng.nextInt((int)(gameData.getWidth()/2 - 100), (int)(gameData.getWidth()/2 + 100)));
-
-                angle = 0;
-            }
-
-            angle = rng.nextDouble(angle-60, angle + 61);
-
-            double magnitude = 1;
-            double x =  magnitude * Math.sin(Math.toRadians(angle));
-            double y = -magnitude * Math.cos(Math.toRadians(angle));
-
-            world.addEntity(spi.createAsteroid(startPos, new Vector(x, y)));
-            asteroidSpawnCooldown = ASTEROID_SPAWN_TIME;
         }
     }
 

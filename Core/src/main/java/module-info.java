@@ -9,6 +9,7 @@ module Core {
     requires CommonEnemy;
     requires CommonAsteroid;
     requires spring.context;
+    requires spring.beans;
 
     uses IGamePluginService;
     uses IEntityProccessingService;

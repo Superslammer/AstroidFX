@@ -7,6 +7,8 @@ module Enemy{
     requires CommonEnemy;
     requires javafx.graphics;
 
+    uses IEnemySPI;
+
     provides IEnemySPI with EnemyHandelingSystem;
     provides IEntityProccessingService with EnemyHandelingSystem;
 }

@@ -1,2 +1,4 @@
 - [ ] Document IGamePluginService, IEntityProcessorService (and IPostEntityProcessorService)
-- 
+- [ ] Implement a JPMS Module Layer with a "plugins" path
+- [ ] Do unit testing
+- [ ] Create scoring spring micro service
