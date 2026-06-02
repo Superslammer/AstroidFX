@@ -1,3 +1,4 @@
+import dk.sdu.cbse.asteroid.AsteroidCreator;
 import dk.sdu.cbse.asteroid.AsteroidHandelingSystem;
 import dk.sdu.cbse.asteroid.AsteroidSplitterImpl;
 import dk.sdu.cbse.common.asteroid.IAsteroidSPI;
@@ -12,6 +13,6 @@ module Asteroid {
     uses IAsteroidSPI;
 
     provides IEntityProccessingService with AsteroidHandelingSystem;
-    provides IAsteroidSPI with AsteroidHandelingSystem;
+    provides IAsteroidSPI with AsteroidCreator;
     provides IAsteroidSplitter with AsteroidSplitterImpl;
 }

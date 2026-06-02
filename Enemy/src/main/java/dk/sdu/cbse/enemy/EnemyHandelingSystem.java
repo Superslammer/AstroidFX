@@ -62,13 +62,17 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
 
         // Spawn new enemies
         if (enemySpawnCooldown <= 0){
-            List<IEnemySPI> spis = getEnemySPIs();
+            List<IEnemySPI> spis = getEnemySPIs(gameData);
+            System.out.println(spis.size());
             if(!spis.isEmpty()){
                 spawnEnemies(gameData, world, spis);
             }
 
             enemySpawnCooldown = ENEMY_SPAWN_TIME;
         }
+
+        // Lower enemy timeout
+        enemySpawnCooldown -= deltaT;
     }
 
     private void spawnEnemies(GameData gameData, World world, List<IEnemySPI> enemySPIS){
@@ -106,12 +110,11 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
 
         angle = rng.nextDouble(angle-30, angle + 31);
         world.addEntity(spi.createEnemy(startPos, angle));
-        enemySpawnCooldown = ENEMY_SPAWN_TIME;
     }
 
-    public List<IEnemySPI> getEnemySPIs(){
+    public List<IEnemySPI> getEnemySPIs(GameData gameData){
         List<IEnemySPI> spis = new ArrayList<>();
-        ServiceLoader.load(IEnemySPI.class).forEach(spis::add);
+        ServiceLoader.load(gameData.getPluginLayer(), IEnemySPI.class).forEach(spis::add);
         return spis;
     }
 
@@ -119,7 +122,7 @@ public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySP
         if (enemy.getX() > width + 50 || enemy.getX() < -50){
             return true;
         }
-        return (enemy.getY() > height + 50) && !(enemy.getY() < -50);
+        return (enemy.getY() > height + 50) || (enemy.getY() < -50);
     }
 
     @Override

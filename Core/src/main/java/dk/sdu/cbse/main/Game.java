@@ -14,18 +14,17 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
 public class Game {
     private final World world = new World();
     private final Pane worldWindow = new Pane();
     private final GameData gameData = new GameData();
     private final Map<Entity, Polygon> polygons = new ConcurrentHashMap<>();
 
+    private final ModuleLayer pluginLayer;
     private final List<IGamePluginService> gamePluginServices;
     private final List<IEntityProccessingService> entityProcessingServices;
     private final List<IPostEntityProcessingService> postEntityProcessingServices;
@@ -33,13 +32,16 @@ public class Game {
 
     @Autowired
     Game(List<IGamePluginService> gamePluginServices, List<IEntityProccessingService> entityProccessingServices,
-         List<IPostEntityProcessingService> postEntityProcessingServices){
+         List<IPostEntityProcessingService> postEntityProcessingServices, ModuleLayer pluginLayer){
         this.gamePluginServices = gamePluginServices;
         this.entityProcessingServices = entityProccessingServices;
         this.postEntityProcessingServices = postEntityProcessingServices;
+        this.pluginLayer = pluginLayer;
     }
 
     public void start(Stage window) {
+        gameData.setPluginLayer(pluginLayer);
+
         Text text = new Text(10, 20, "Destroyed asteroids: 0");
         worldWindow.setPrefSize(gameData.getWidth(), gameData.getHeight());
         worldWindow.getChildren().add(text);

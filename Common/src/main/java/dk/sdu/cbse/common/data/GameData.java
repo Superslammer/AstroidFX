@@ -8,6 +8,7 @@ public class GameData {
 
     private double deltaT = 0;
     private String playerID = "";
+    private ModuleLayer pluginLayer = null;
 
     private boolean left = false;
     private boolean right = false;
@@ -39,6 +40,17 @@ public class GameData {
         else if(code == KeyCode.SPACE){
             shoot = true;
         }
+    }
+
+    public void setPluginLayer(ModuleLayer pluginLayer) {
+        if (this.pluginLayer != null){
+            return;
+        }
+        this.pluginLayer = pluginLayer;
+    }
+
+    public ModuleLayer getPluginLayer() {
+        return pluginLayer;
     }
 
     public String getPlayerID() {
