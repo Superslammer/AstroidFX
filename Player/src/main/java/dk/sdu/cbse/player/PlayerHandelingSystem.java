@@ -66,6 +66,19 @@ public class PlayerHandelingSystem implements IEntityProccessingService {
             player.setY(player.getY() + vel.getY() * deltaT);
             //System.out.println("PX: " + player.getX() + ", PY: " + player.getY() + ", PA: " + player.getAngle() + ", PV: " + player.getVelocity());
 
+            if (player.getX() > gameData.getWidth() + 10d){
+                player.setX(-10d);
+            }
+            if (player.getY() > gameData.getHeight() + 10d){
+                player.setY(-10d);
+            }
+            if (player.getX() < -10d) {
+                player.setX(gameData.getWidth() + 10d);
+            }
+            if (player.getY() < -10d) {
+                player.setY(gameData.getHeight() + 10d);
+            }
+
             // Apply drag
             double curMag = vel.magnitude();
             if (curMag != 0) {
