@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 public class CollisionDetector implements IPostEntityProcessingService {
-    private List<IScoringSPI> scoringSPIs = null;
+    List<IScoringSPI> scoringSPIs = null;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -36,14 +36,14 @@ public class CollisionDetector implements IPostEntityProcessingService {
                     collider1.setHit(true);
                     collider2.setHit(true);
 
-                    if (collider1 instanceof Asteroid || collider2 instanceof Asteroid){
+                    if (collider1 instanceof Asteroid && !scoringSPIs.isEmpty()){
                         IScoringSPI spi = scoringSPIs.getFirst();
                         if (spi != null){
                             spi.addScore(1);
                         }
                     }
 
-                    if (collider1 instanceof Enemy || collider2 instanceof Enemy){
+                    if (collider1 instanceof Enemy && !scoringSPIs.isEmpty()){
                         IScoringSPI spi = scoringSPIs.getFirst();
                         if (spi != null){
                             spi.addScore(5);
