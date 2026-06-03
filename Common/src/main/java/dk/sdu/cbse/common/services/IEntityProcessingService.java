@@ -6,7 +6,7 @@ import dk.sdu.cbse.common.data.World;
 /**
  * Service interface for managing entity processing.
  */
-public interface IEntityProccessingService {
+public interface IEntityProcessingService {
     /**
      * Does all the processing an entity need for the current update cycle.
      * <p><b>Pre-conditions:</b></p>

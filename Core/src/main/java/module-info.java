@@ -1,4 +1,4 @@
-import dk.sdu.cbse.common.services.IEntityProccessingService;
+import dk.sdu.cbse.common.services.IEntityProcessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.cbse.scoringclient.spi.IScoringSPI;
@@ -13,7 +13,7 @@ module Core {
     requires ScoringClient;
 
     uses IGamePluginService;
-    uses IEntityProccessingService;
+    uses IEntityProcessingService;
     uses IPostEntityProcessingService;
     uses IScoringSPI;
 

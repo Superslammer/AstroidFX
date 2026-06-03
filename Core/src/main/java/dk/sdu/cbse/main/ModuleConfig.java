@@ -1,6 +1,6 @@
 package dk.sdu.cbse.main;
 
-import dk.sdu.cbse.common.services.IEntityProccessingService;
+import dk.sdu.cbse.common.services.IEntityProcessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.cbse.main.util.PluginLayerFactory;
@@ -15,7 +15,7 @@ import java.util.List;
 @Configuration
 public class ModuleConfig {
     @Bean
-    public Game game(List<IGamePluginService> gamePlugins, List<IEntityProccessingService> processingServices,
+    public Game game(List<IGamePluginService> gamePlugins, List<IEntityProcessingService> processingServices,
                      List<IPostEntityProcessingService> postProcessingServices, ModuleLayer pluginLayer,
                      List<IScoringSPI> scoringSPIs) {
 
@@ -33,8 +33,8 @@ public class ModuleConfig {
     }
 
     @Bean
-    public List<IEntityProccessingService> processingServices(ModuleLayer pluginLayer){
-        return PluginServices.load( IEntityProccessingService.class, pluginLayer);
+    public List<IEntityProcessingService> processingServices(ModuleLayer pluginLayer){
+        return PluginServices.load( IEntityProcessingService.class, pluginLayer);
     }
 
     @Bean

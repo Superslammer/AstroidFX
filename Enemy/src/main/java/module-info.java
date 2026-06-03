@@ -1,5 +1,5 @@
 import dk.sdu.cbse.common.enemy.IEnemySPI;
-import dk.sdu.cbse.common.services.IEntityProccessingService;
+import dk.sdu.cbse.common.services.IEntityProcessingService;
 import dk.sdu.cbse.enemy.EnemyHandelingSystem;
 
 module Enemy{
@@ -10,5 +10,5 @@ module Enemy{
     uses IEnemySPI;
 
     provides IEnemySPI with EnemyHandelingSystem;
-    provides IEntityProccessingService with EnemyHandelingSystem;
+    provides IEntityProcessingService with EnemyHandelingSystem;
 }

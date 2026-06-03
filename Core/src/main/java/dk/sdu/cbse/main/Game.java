@@ -3,7 +3,7 @@ package dk.sdu.cbse.main;
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
-import dk.sdu.cbse.common.services.IEntityProccessingService;
+import dk.sdu.cbse.common.services.IEntityProcessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.cbse.scoringclient.spi.IScoringSPI;
@@ -29,12 +29,12 @@ public class Game {
 
     private final ModuleLayer pluginLayer;
     private final List<IGamePluginService> gamePluginServices;
-    private final List<IEntityProccessingService> entityProcessingServices;
+    private final List<IEntityProcessingService> entityProcessingServices;
     private final List<IPostEntityProcessingService> postEntityProcessingServices;
     private final List<IScoringSPI> scoringSPIs;
 
     @Autowired
-    Game(List<IGamePluginService> gamePluginServices, List<IEntityProccessingService> entityProccessingServices,
+    Game(List<IGamePluginService> gamePluginServices, List<IEntityProcessingService> entityProccessingServices,
          List<IPostEntityProcessingService> postEntityProcessingServices, ModuleLayer pluginLayer,
          List<IScoringSPI> scoringSPIs){
         this.gamePluginServices = gamePluginServices;
@@ -89,7 +89,7 @@ public class Game {
     }
 
     private void update(){
-        for(IEntityProccessingService service : entityProcessingServices){
+        for(IEntityProcessingService service : entityProcessingServices){
             service.proccess(gameData, world);
         }
 

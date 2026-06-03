@@ -5,12 +5,12 @@ import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.Vector;
 import dk.sdu.cbse.common.data.World;
-import dk.sdu.cbse.common.services.IEntityProccessingService;
+import dk.sdu.cbse.common.services.IEntityProcessingService;
 import dk.sdu.cbse.common.bullet.IBulletSPI;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
-public class BulletHandelingSystem implements IEntityProccessingService, IBulletSPI {
+public class BulletHandelingSystem implements IEntityProcessingService, IBulletSPI {
     private static final double BULLET_SPEED = 2d;
 
     @Override

@@ -6,7 +6,7 @@ import dk.sdu.cbse.common.data.Vector;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.enemy.Enemy;
 import dk.sdu.cbse.common.enemy.IEnemySPI;
-import dk.sdu.cbse.common.services.IEntityProccessingService;
+import dk.sdu.cbse.common.services.IEntityProcessingService;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ServiceLoader;
 
-public class EnemyHandelingSystem implements IEntityProccessingService, IEnemySPI {
+public class EnemyHandelingSystem implements IEntityProcessingService, IEnemySPI {
     private static final double ENEMY_SPAWN_TIME = 10d;
     private double enemySpawnCooldown = 0;
 

@@ -7,14 +7,14 @@ import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.Vector;
 import dk.sdu.cbse.common.data.World;
-import dk.sdu.cbse.common.services.IEntityProccessingService;
+import dk.sdu.cbse.common.services.IEntityProcessingService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.ServiceLoader;
 
-public class AsteroidHandelingSystem implements IEntityProccessingService {
+public class AsteroidHandelingSystem implements IEntityProcessingService {
     private static final double ASTEROID_SPAWN_TIME = 2.5d;
 
     private double asteroidSpawnCooldown = 0;

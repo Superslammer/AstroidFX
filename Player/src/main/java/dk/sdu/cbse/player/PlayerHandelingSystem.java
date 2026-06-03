@@ -5,12 +5,12 @@ import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.Vector;
 import dk.sdu.cbse.common.data.World;
-import dk.sdu.cbse.common.services.IEntityProccessingService;
+import dk.sdu.cbse.common.services.IEntityProcessingService;
 
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
-public class PlayerHandelingSystem implements IEntityProccessingService {
+public class PlayerHandelingSystem implements IEntityProcessingService {
     private static final double BULLET_COOLDOWN_SECONDS = 0.5d;
     private static final double PLAYER_DRAG = 0.001d;
     private double currentBulletCooldown = 0;
