@@ -5,6 +5,7 @@ import dk.sdu.cbse.common.services.IGamePluginService;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.cbse.main.util.PluginLayerFactory;
 import dk.sdu.cbse.main.util.PluginServices;
+import dk.sdu.cbse.scoringclient.spi.IScoringSPI;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,12 +15,11 @@ import java.util.List;
 @Configuration
 public class ModuleConfig {
     @Bean
-    public Game game(List<IGamePluginService> gamePlugins,
-                     List<IEntityProccessingService> processingServices,
-                     List<IPostEntityProcessingService> postProcessingServices,
-                     ModuleLayer pluginLayer) {
+    public Game game(List<IGamePluginService> gamePlugins, List<IEntityProccessingService> processingServices,
+                     List<IPostEntityProcessingService> postProcessingServices, ModuleLayer pluginLayer,
+                     List<IScoringSPI> scoringSPIs) {
 
-        return new Game(gamePlugins, processingServices, postProcessingServices, pluginLayer);
+        return new Game(gamePlugins, processingServices, postProcessingServices, pluginLayer, scoringSPIs);
     }
 
     @Bean
@@ -40,5 +40,10 @@ public class ModuleConfig {
     @Bean
     public List<IPostEntityProcessingService> postProcessingService(ModuleLayer pluginLayer){
         return PluginServices.load(IPostEntityProcessingService.class, pluginLayer);
+    }
+
+    @Bean
+    public List<IScoringSPI> scoringSPIs(ModuleLayer pluginLayer){
+        return PluginServices.load(IScoringSPI.class, pluginLayer);
     }
 }

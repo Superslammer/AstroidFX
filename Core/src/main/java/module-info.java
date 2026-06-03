@@ -1,7 +1,7 @@
-import dk.sdu.cbse.common.asteroid.IAsteroidSPI;
-import dk.sdu.cbse.common.enemy.IEnemySPI;
 import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
+import dk.sdu.cbse.common.services.IPostEntityProcessingService;
+import dk.sdu.cbse.scoringclient.spi.IScoringSPI;
 
 module Core {
     requires javafx.graphics;
@@ -10,12 +10,12 @@ module Core {
     requires CommonAsteroid;
     requires spring.context;
     requires spring.beans;
+    requires ScoringClient;
 
     uses IGamePluginService;
     uses IEntityProccessingService;
-    uses IEnemySPI;
-    uses IAsteroidSPI;
-    uses dk.sdu.cbse.common.services.IPostEntityProcessingService;
+    uses IPostEntityProcessingService;
+    uses IScoringSPI;
 
     opens dk.sdu.cbse.main to spring.core, spring.beans, spring.context, javafx.graphics;
 

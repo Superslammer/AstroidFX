@@ -6,6 +6,7 @@ import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IEntityProccessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
+import dk.sdu.cbse.scoringclient.spi.IScoringSPI;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -23,28 +24,33 @@ public class Game {
     private final Pane worldWindow = new Pane();
     private final GameData gameData = new GameData();
     private final Map<Entity, Polygon> polygons = new ConcurrentHashMap<>();
+    private final Text scoreText = new Text(10, 20, "Score: 0");
+    private long lastFrameTime = -1;
 
     private final ModuleLayer pluginLayer;
     private final List<IGamePluginService> gamePluginServices;
     private final List<IEntityProccessingService> entityProcessingServices;
     private final List<IPostEntityProcessingService> postEntityProcessingServices;
-    private long lastFrameTime = -1;
+    private final List<IScoringSPI> scoringSPIs;
 
     @Autowired
     Game(List<IGamePluginService> gamePluginServices, List<IEntityProccessingService> entityProccessingServices,
-         List<IPostEntityProcessingService> postEntityProcessingServices, ModuleLayer pluginLayer){
+         List<IPostEntityProcessingService> postEntityProcessingServices, ModuleLayer pluginLayer,
+         List<IScoringSPI> scoringSPIs){
         this.gamePluginServices = gamePluginServices;
         this.entityProcessingServices = entityProccessingServices;
         this.postEntityProcessingServices = postEntityProcessingServices;
         this.pluginLayer = pluginLayer;
+        this.scoringSPIs = scoringSPIs;
     }
 
     public void start(Stage window) {
         gameData.setPluginLayer(pluginLayer);
 
-        Text text = new Text(10, 20, "Destroyed asteroids: 0");
+        scoreText.setStroke(Color.WHITE);
+
         worldWindow.setPrefSize(gameData.getWidth(), gameData.getHeight());
-        worldWindow.getChildren().add(text);
+        worldWindow.getChildren().add(scoreText);
 
         Scene gameScene = new Scene(worldWindow);
         gameScene.setFill(Color.BLACK);
@@ -93,6 +99,16 @@ public class Game {
     }
 
     private void draw(){
+        // Update score text
+        try {
+            IScoringSPI scoringSPI = scoringSPIs.getFirst();
+            int newScore = scoringSPI.getScore();
+            scoreText.setText("Score: " + newScore);
+        } catch (NullPointerException ignored) { }
+        catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+
         // Remove polygons of non-existant entities
         Set<Entity> drawnEntities = new HashSet<>(polygons.keySet());
         Set<Entity> worldEntities = new HashSet<>(world.getEntities());
@@ -117,6 +133,5 @@ public class Game {
             polygon.setTranslateY(entityToAdd.getY());
             polygon.setRotate(entityToAdd.getAngle());
         }
-
     }
 }
